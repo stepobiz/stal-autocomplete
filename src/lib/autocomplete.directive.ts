@@ -1,7 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { StalAutocompleteComponent } from './stal-autocomplete.component';
+import { StalAutocompleteComponent } from './autocomplete.component';
 
 @Directive({
 	selector: '[stalAutocomplete]'

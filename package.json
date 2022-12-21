@@ -1,9 +1,18 @@
 {
-  "name": "autocomplete",
-  "version": "0.0.1",
+  "name": "@stal/autocomplete",
+  "version": "0.0.3",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stepobiz/stal-autocomplete.git"
+  },
+  "author": {
+    "name": "Cavallaro Catello Stefano",
+    "email": "stefano@tepo.biz",
+    "url": "https://stepo.biz"
+  },
   "peerDependencies": {
-    "@angular/common": "^14.2.0",
-    "@angular/core": "^14.2.0"
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

@@ -1,4 +1,4 @@
-# Autocomplete
+# Stal Autocomplete
 
 StalAutocompleteModule is angular module like autocomplete module, but more sample.
 

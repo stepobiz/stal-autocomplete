@@ -1,16 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { AutocompleteComponent } from './autocomplete.component';
-
-
+import { StalAutocompleteComponent } from './autocomplete.component';
+import { StalAutocompleteDirective } from './autocomplete.directive';
 
 @NgModule({
-  declarations: [
-    AutocompleteComponent
-  ],
   imports: [
+    CommonModule,
+  ],
+  declarations: [
+    StalAutocompleteComponent,
+    StalAutocompleteDirective,
   ],
   exports: [
-    AutocompleteComponent
+    StalAutocompleteComponent,
+    StalAutocompleteDirective,
   ]
 })
-export class AutocompleteModule { }
+export class StalAutocompleteModule { }

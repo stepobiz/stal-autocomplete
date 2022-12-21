@@ -2,6 +2,6 @@
  * Public API Surface of autocomplete
  */
 
-export * from './lib/autocomplete.service';
-export * from './lib/autocomplete.component';
-export * from './lib/autocomplete.module';
+export { StalAutocompleteDirective } from './lib/autocomplete.directive';
+export { StalAutocompleteComponent } from './lib/autocomplete.component';
+export { StalAutocompleteModule } from './lib/autocomplete.module';
