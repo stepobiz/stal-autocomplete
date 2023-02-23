@@ -3,13 +3,13 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'stal-autocomplete',
-  template: `
+	selector: 'stal-autocomplete',
+	template: `
     <div class="stal-autocomplete wrapper" *ngIf="show">
       <div *ngFor="let element of filteredElements | async" (click)="select(element)">{{ displayFn(element) }}</div>
     </div>
   `,
-  styles: [`
+	styles: [`
     .stal-autocomplete, .wrapper {
       position: fixed;
       background-color: #aaa;
@@ -20,26 +20,26 @@ import { Observable } from 'rxjs';
   `]
 })
 export class StalAutocompleteComponent {
-  @Input() filteredElements: Observable<any[]> | undefined;
-  @Input() input: HTMLInputElement | undefined;
+	@Input() filteredElements: Observable<any[]> | undefined;
+	@Input() input: HTMLInputElement | undefined;
 
-  @Input() displayFn: Function = (selectedElement: any) => {
-    return selectedElement.description;
-  };
+	@Input() displayFn: Function = (selectedElement: any) => {
+		return selectedElement.description;
+	};
 
-  selectedElementObservable: Observable<any>;
-  private selectedElement$ = new Subject<any>();
-  protected show: boolean = false;
+	selectedElementObservable: Observable<any>;
+	private selectedElement$ = new Subject<any>();
+	protected show: boolean = false;
 
-  constructor() {
-    this.selectedElementObservable = this.selectedElement$.asObservable();
-  }
+	constructor() {
+		this.selectedElementObservable = this.selectedElement$.asObservable();
+	}
 
-  select(e: any) {
-    this.selectedElement$.next(e);
-  }
+	select(e: any) {
+		this.selectedElement$.next(e);
+	}
 
-  showOptions(show: boolean) {
-    this.show = show;
-  }
+	showOptions(show: boolean) {
+		this.show = show;
+	}
 }

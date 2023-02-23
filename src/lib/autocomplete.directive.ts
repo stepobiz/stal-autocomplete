@@ -9,9 +9,11 @@ import { StalAutocompleteComponent } from './autocomplete.component';
 export class StalAutocompleteDirective implements OnInit, OnDestroy {
 	@Input() stalAutocomplete: StalAutocompleteComponent | undefined;
 
+	/*
 	@Input() displayFn: Function = (selectedElement: any) => {
 		return selectedElement.description;
 	};
+	*/
 
 	constructor(
 		private el: ElementRef,
@@ -21,7 +23,7 @@ export class StalAutocompleteDirective implements OnInit, OnDestroy {
 	destroyer: Subscription[] = [];
 
 	ngOnInit() {
-        if(this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
+		if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
 
 		// Prepare variables
 		let inputElement: HTMLInputElement = this.el.nativeElement;
@@ -37,7 +39,7 @@ export class StalAutocompleteDirective implements OnInit, OnDestroy {
 		// On start
 		if (form.value[controlName] !== undefined) {
 			if (form.value[controlName] != null) {
-				inputElement.value = this.displayFn(form.value[controlName]);
+				inputElement.value = this.stalAutocomplete.displayFn(form.value[controlName]);
 			}
 		}
 
@@ -49,19 +51,22 @@ export class StalAutocompleteDirective implements OnInit, OnDestroy {
 					patch[controlName] = selectedElement;
 					form.patchValue(patch);
 				}
-				inputElement.value = this.displayFn(selectedElement);
+				if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required'); // Only for warn
+				inputElement.value = this.stalAutocomplete.displayFn(selectedElement);
 			}
 		));
 	}
 
 	@HostListener('focus', ['$event']) onFocus(e: any) {
-        if(this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
-		this.stalAutocomplete.showOptions(true);
+		setTimeout(() => {
+			if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
+			this.stalAutocomplete.showOptions(true);
+		}, 200);
 	}
 
 	@HostListener('focusout', ['$event']) onFocusOut(e: any) {
-        setTimeout(() => {
-            if(this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
+		setTimeout(() => {
+			if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
 			this.stalAutocomplete.showOptions(false);
 		}, 200);
 	}
