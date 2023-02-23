@@ -9,21 +9,15 @@ import { StalAutocompleteComponent } from './autocomplete.component';
 export class StalAutocompleteDirective implements OnInit, OnDestroy {
 	@Input() stalAutocomplete: StalAutocompleteComponent | undefined;
 
-	/*
-	@Input() displayFn: Function = (selectedElement: any) => {
-		return selectedElement.description;
-	};
-	*/
-
 	constructor(
 		private el: ElementRef,
 		private ngControl: NgControl,
 	) { }
 
-	destroyer: Subscription[] = [];
+	destroyers: Subscription[] = [];
 
 	ngOnInit() {
-		if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
+		if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required (001)');
 
 		// Prepare variables
 		let inputElement: HTMLInputElement = this.el.nativeElement;
@@ -44,34 +38,36 @@ export class StalAutocompleteDirective implements OnInit, OnDestroy {
 		}
 
 		// On Edit event
-		this.destroyer.push(this.stalAutocomplete.selectedElementObservable.subscribe(
+		let destroyer = this.stalAutocomplete.selectedElementObservable.subscribe(
 			(selectedElement) => {
 				{
 					let patch: any = {};
 					patch[controlName] = selectedElement;
 					form.patchValue(patch);
 				}
-				if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required'); // Only for warn
+				if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required (002)'); // Only for warn
 				inputElement.value = this.stalAutocomplete.displayFn(selectedElement);
 			}
-		));
+		);
+
+		this.destroyers.push(destroyer);
 	}
 
 	@HostListener('focus', ['$event']) onFocus(e: any) {
 		setTimeout(() => {
-			if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
+			if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required (003)');
 			this.stalAutocomplete.showOptions(true);
-		}, 200);
+		}, 1);
 	}
 
 	@HostListener('focusout', ['$event']) onFocusOut(e: any) {
 		setTimeout(() => {
-			if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required');
+			if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required (004)');
 			this.stalAutocomplete.showOptions(false);
 		}, 200);
 	}
 
 	ngOnDestroy() {
-		this.destroyer.forEach(s => s.unsubscribe());
+		this.destroyers.forEach(s => s.unsubscribe());
 	}
 }

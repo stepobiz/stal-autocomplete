@@ -5,10 +5,12 @@ import { Observable } from 'rxjs';
 @Component({
 	selector: 'stal-autocomplete',
 	template: `
-    <div class="stal-autocomplete wrapper" *ngIf="show">
-      <div *ngFor="let element of filteredElements | async" (click)="select(element)">{{ displayFn(element) }}</div>
-    </div>
-  `,
+	<div class="stal-autocomplete wrapper" *ngIf="show">
+		<div *ngIf="state == 'loading'">LOADING</div>
+	  	<div *ngIf="state == 'empty'">NO RESTULT</div>
+		<div *ngFor="let element of elements" (click)="select(element)">{{ displayFn(element) }}&nbsp;</div>
+	</div>
+	`,
 	styles: [`
     .stal-autocomplete, .wrapper {
       position: fixed;
@@ -19,20 +21,35 @@ import { Observable } from 'rxjs';
     }
   `]
 })
-export class StalAutocompleteComponent {
+export class StalAutocompleteComponent implements OnInit {
 	@Input() filteredElements: Observable<any[]> | undefined;
-	@Input() input: HTMLInputElement | undefined;
 
 	@Input() displayFn: Function = (selectedElement: any) => {
-		return selectedElement.description;
+		return selectedElement[Object.keys(selectedElement)[1]];
 	};
 
 	selectedElementObservable: Observable<any>;
 	private selectedElement$ = new Subject<any>();
+	protected elements: any[] = [];
 	protected show: boolean = false;
+	protected state = 'loading';
 
 	constructor() {
 		this.selectedElementObservable = this.selectedElement$.asObservable();
+	}
+
+	ngOnInit() {
+		if (this.filteredElements === undefined) throw new Error('filteredElements param is required (001)');
+
+		this.filteredElements.subscribe(
+			(elements: any[]) => {
+				this.elements = elements;
+				this.state = 'result'
+				if(this.elements.length < 1) {
+					this.state = 'empty';
+				}
+			}
+		)
 	}
 
 	select(e: any) {
