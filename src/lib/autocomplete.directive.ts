@@ -33,7 +33,10 @@ export class StalAutocompleteDirective implements OnInit, OnDestroy {
 		// On start
 		if (form.value[controlName] !== undefined) {
 			if (form.value[controlName] != null) {
-				inputElement.value = this.stalAutocomplete.displayFn(form.value[controlName]);
+				setTimeout(() => {
+					if (this.stalAutocomplete === undefined) throw new Error('stalAutocomplete param is required (002)');
+					inputElement.value = this.stalAutocomplete.displayFn(form.value[controlName]);	
+				}, 1);
 			}
 		}
 
